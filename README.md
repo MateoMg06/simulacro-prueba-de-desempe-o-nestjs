@@ -2,6 +2,10 @@
 
 A small NestJS and TypeORM REST API for creating commercial follow-up requests. It uses PostgreSQL, API key protection, user and role guards, DTO validation, uniform responses, and Swagger.
 
+## Repository
+
+[GitHub repository](https://github.com/MateoMg06/simulacro-prueba-de-desempe-o-nestjs.git)
+
 ## Requirements
 
 - Node.js 20 or newer

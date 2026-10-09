@@ -2,9 +2,9 @@ import { Injectable, OnModuleInit } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Client } from '../clients/dao/client.entity.js';
-import { Request } from '../solicitudes/dao/request.entity.js';
-import { RequestStatus } from '../solicitudes/dao/request-status.enum.js';
-import { StatusHistory } from '../solicitudes/dao/status-history.entity.js';
+import { Request } from '../requests/dao/request.entity.js';
+import { RequestStatus } from '../requests/dao/request-status.enum.js';
+import { StatusHistory } from '../requests/dao/status-history.entity.js';
 import { User } from './dao/user.entity.js';
 
 @Injectable()

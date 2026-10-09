@@ -1,6 +1,6 @@
 import { Column, Entity, OneToMany, PrimaryColumn } from 'typeorm';
 import type { Relation } from 'typeorm';
-import { Request } from '../../solicitudes/dao/request.entity.js';
+import { Request } from '../../requests/dao/request.entity.js';
 
 export type UserRole = 'admin' | 'supervisor' | 'advisor';
 @Entity('users')

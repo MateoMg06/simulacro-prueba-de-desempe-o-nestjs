@@ -1,13 +1,13 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { RequestsModule } from './solicitudes/requests.module.js';
+import { RequestsModule } from './requests/requests.module.js';
 import { UsersModule } from './users/users.module.js';
 import { ClientsModule } from './clients/clients.module.js';
 import { User } from './users/dao/user.entity.js';
 import { Client } from './clients/dao/client.entity.js';
-import { Request } from './solicitudes/dao/request.entity.js';
-import { StatusHistory } from './solicitudes/dao/status-history.entity.js';
+import { Request } from './requests/dao/request.entity.js';
+import { StatusHistory } from './requests/dao/status-history.entity.js';
 
 @Module({
   imports: [

@@ -1,6 +1,6 @@
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import type { Relation } from 'typeorm';
-import { Request } from '../../solicitudes/dao/request.entity.js';
+import { Request } from '../../requests/dao/request.entity.js';
 
 @Entity('clients')
 export class Client {

@@ -85,6 +85,10 @@ Successful responses use `{ "success": true, "data": ... }`. Errors use `{ "succ
 
 See `.env.example`. `DB_SYNCHRONIZE=true` is convenient for local evaluation; use migrations and set it to `false` before production use.
 
+## Remove the old table
+
+The old `public.solicitudes` table is not used by this API. The current table is `public.requests`. To remove the old table, open `database/cleanup-legacy-table.sql` in pgAdmin's Query Tool and run it. The script removes the legacy table only when it is empty; if it contains data, it stops and leaves the table untouched.
+
 ## Checks
 
 ```bash

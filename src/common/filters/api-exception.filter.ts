@@ -19,7 +19,7 @@ export class ApiExceptionFilter implements ExceptionFilter {
         : HttpStatus.INTERNAL_SERVER_ERROR;
     const message =
       exception instanceof HttpException
-        ? exception.getResponse()
+        ? this.extractMessage(exception)
         : 'Internal server error';
     response.status(status).json({
       success: false,
@@ -28,5 +28,14 @@ export class ApiExceptionFilter implements ExceptionFilter {
       timestamp: new Date().toISOString(),
       path: request.url,
     });
+  }
+
+  // Nest wraps messages as { message, error, statusCode }; keep only the message
+  // (a string, or a list of messages for validation errors).
+  private extractMessage(exception: HttpException): string | string[] {
+    const body = exception.getResponse();
+    if (typeof body === 'string') return body;
+    const { message } = body as { message?: string | string[] };
+    return message ?? exception.message;
   }
 }

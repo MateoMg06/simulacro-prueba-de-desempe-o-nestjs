@@ -14,7 +14,9 @@ describe('ApiKeyGuard', () => {
         getRequest: () => ({ headers: apiKey ? { 'x-api-key': apiKey } : {} }),
       }),
     }) as ExecutionContext;
-  beforeEach(() => jest.clearAllMocks());
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
   it('accepts each configured API key', () => {
     expect(guard.canActivate(makeContext('first_key'))).toBe(true);
     expect(guard.canActivate(makeContext('second_key'))).toBe(true);

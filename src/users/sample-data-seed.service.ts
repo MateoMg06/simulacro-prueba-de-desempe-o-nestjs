@@ -4,7 +4,8 @@ import { Repository } from 'typeorm';
 import { Client } from '../clients/dao/client.entity.js';
 import { Request } from '../requests/dao/request.entity.js';
 import { RequestStatus } from '../requests/dao/request-status.enum.js';
-import { StatusHistory } from '../requests/dao/status-history.entity.js';
+import { RequestHistory } from '../requests/dao/request-history.entity.js';
+import { HistoryEventType } from '../requests/dao/history-event-type.enum.js';
 import { User } from './dao/user.entity.js';
 
 @Injectable()
@@ -13,8 +14,8 @@ export class SampleDataSeedService implements OnModuleInit {
     @InjectRepository(User) private readonly users: Repository<User>,
     @InjectRepository(Client) private readonly clients: Repository<Client>,
     @InjectRepository(Request) private readonly requests: Repository<Request>,
-    @InjectRepository(StatusHistory)
-    private readonly statusHistory: Repository<StatusHistory>,
+    @InjectRepository(RequestHistory)
+    private readonly history: Repository<RequestHistory>,
   ) {}
 
   async onModuleInit(): Promise<void> {
@@ -94,28 +95,40 @@ export class SampleDataSeedService implements OnModuleInit {
         this.requests.create({
           description: 'Demo follow-up for the annual services proposal',
           status: RequestStatus.IN_PROGRESS,
+          version: 2,
           client,
           advisor,
         }),
       );
     }
 
-    const historyExists = await this.statusHistory.exists({
-      where: {
-        request: { id: request.id },
-        previousStatus: RequestStatus.PENDING,
-        newStatus: RequestStatus.IN_PROGRESS,
-      },
+    const historyExists = await this.history.exists({
+      where: { requestId: request.id },
     });
     if (!historyExists) {
-      await this.statusHistory.save(
-        this.statusHistory.create({
-          request,
-          previousStatus: RequestStatus.PENDING,
-          newStatus: RequestStatus.IN_PROGRESS,
-          changedBy: supervisor,
+      await this.history.save([
+        this.history.create({
+          requestId: request.id,
+          eventType: HistoryEventType.CREATION,
+          previousValue: null,
+          newValue: RequestStatus.PENDING,
+          actor: advisor,
         }),
-      );
+        this.history.create({
+          requestId: request.id,
+          eventType: HistoryEventType.ASSIGNMENT,
+          previousValue: null,
+          newValue: advisor.id,
+          actor: advisor,
+        }),
+        this.history.create({
+          requestId: request.id,
+          eventType: HistoryEventType.STATUS,
+          previousValue: RequestStatus.PENDING,
+          newValue: RequestStatus.IN_PROGRESS,
+          actor: supervisor,
+        }),
+      ]);
     }
   }
 }
